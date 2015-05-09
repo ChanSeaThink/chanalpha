@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>博文页</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+{% load staticfiles %}
+<link href="{% static "css/article.css" %}" rel="stylesheet">
+<link href="{% static "img/favicon.png" %}" %}" type="image/x-icon" rel="icon">
+<!--<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js" %}"></script>-->
+<script src="{% static "js/jquery-1.11.2.js" %}"></script>
+<script src="{% static "js/article.js" %}">
+</script>
+</head>
+<body>
+	<div id="nav_top">
+		<div id="backwards">
+			<img src="{% static "img/article/backwards.png" %}">
+		</div>
+        {% if logined %}
+		<div id="user">
+			<div id="triangle"></div>
+			<div id="uname">{{ username }}</div>
+			<div id="user_face"><img src="http://identicons.io/{{ username }}.png?size=63"></div>
+			<div id="list_top">
+				<ul>
+                    {% if writePermission %}
+					<li id="list_edit">
+						<img src="{% static "img/pen.png" %}">
+						<p>编辑</p>
+					</li>
+					{% endif %}
+					<li id="list_setting">
+						<img src="{% static "img/settings.png" %}">
+						<p>设置</p>
+					</li>
+					<li id="list_logout">
+						<img src="{% static "img/paperplane.png" %}">
+						<p>注销</p>
+						<div class="clear"></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		{% else %}
+		<div id="lr">
+			<div id="log">登录</div>
+			<span>/</span>
+			<div id="reg">注册</div>
+		</div>
+		{% endif %}
+		<div>
+			<input id="search" placeholder="搜索">
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="fill"></div>
+	<div id="main">
+		<div class="fill"></div>
+		<div id="content">
+			<div id="article" data-url="/change/{{ passage.id }}">
+				<h1>{{passage.Title}}</h1>
+				<p id="article_data">{{passage.Time}}&emsp;{{passage.ReadTimes}}次阅读</p>
+				<div id="text">
+					{{passage.LongContent | safe}}
+				</div>
+			</div>
+			<div style="position:relative">
+				<div id="comment" contenteditable><p> </p><p><br></p></div>
+        		{% if not logined %}
+				<div class="kabe">登录后才可以评论~<img src="{% static "img/article/smiley2.png" %}"></div>
+				{% endif %}
+				{% if ban %}
+				<div class="kabe">小黑屋内无法发言~<img src="{% static "img/article/smiley2.png" %}"></div>
+				{% endif %}
+			</div>
+			<div id="edit">
+				<div id="send_message">发表评论</div>
+				<div id="face">
+					<img src="{% static "img/article/smiley.png" %}" />
+					<div>
+						<div id="expression">
+							<img src="{% static "img/article/face1.png" %}">
+						</div>
+					</div>
+				</div>
+				<p class="clear"></p>
+			</div>
+			<div id="comments_area" data-n="{{ passage.CommentTimes }}">
+			    {% for commentObj in commentObjLs %}
+				<div>
+					<img src="http://identicons.io/{{ commentObj.UserName }}.png?size=49">
+					<p class="username">{{ commentObj.UserName }}</p>
+					<p class="time">{{ commentObj.Time }}</p>
+					<div class="comment_text">{{ commentObj.Content | safe }}</div>
+					<p class="clear"></p>
+				</div>
+				{% endfor %}
+			</div>
+			<div id="page"></div>
+		</div>
+		<div class="fill"></div>
+	</div>
+	<div id="popup">
+		<div id="popup_bottom"></div>
+		<div id="popup_top">
+			<div id="lr_box">
+				<div id="close">×</div>
+				<div id="lr_title">
+					<div id="login">登录</div>
+					<div id="regis">注册</div>
+					<p class="clear"></p>
+				</div>
+				<form id="log_box">
+					<div id="email" class="account">
+						<img src="{% static "img/mail.png" %}">
+						<input type="text"  maxlength="30" placeholder="邮箱">
+						<p></p>
+					</div>
+					<div id="password" class="account">
+						<img src="{% static "img/lock.png" %}">
+						<input type="password" maxlength="16" placeholder="密码">
+						<p></p>
+					</div>
+					<div class="code_check">
+						<img src="">
+						<p>看不清楚？换一张</p>
+						<div>
+							<input type="text"  maxlength="4" placeholder="验证码">
+							<p></p>
+						</div>
+					</div>
+				</form>
+				<form id="reg_box">
+					<div class="account">
+						<img src="{% static "img/mail.png" %}">
+						<input type="text"  maxlength="30" placeholder="账户">
+						<p></p>
+					</div>
+					<div class="account">
+						<img src="{% static "img/t-shirt.png" %}">
+						<input type="text"  maxlength="8" placeholder="昵称">
+						<p></p>
+					</div>
+					<div class="account">
+						<img src="{% static "img/lock.png" %}">
+						<input type="password"  maxlength="16" placeholder="密码">
+						<p></p>
+					</div>
+					<div class="code_check">
+						<img src="">
+						<p>看不清楚？换一张</p>
+						<div>
+							<input type="text"  maxlength="4" placeholder="验证码">
+							<p></p>
+						</div>
+					</div>
+				</form>
+				<div id="log_button">登录</div>
+				<div id="reg_button">注册</div>
+			</div>
+			<div id="origin_pic">
+				<img src="">
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var base=$(document).width();
+		$(".fill").css("width",(base-600)/2+"px");
+	</script>
+</body>
+</html>
