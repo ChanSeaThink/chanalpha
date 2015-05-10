@@ -241,7 +241,7 @@ def savePicture(request):
         p.save()
         #cachePictureObj = CachePicture.objects.get(ImageName = image.name)
         #path = '/showPicture/' + image.name
-        path = settings.DEFAULT_FILE_STORAGE + '/pictures/' + image.name
+        path = settings.SAE_PIC_URL_HEAD + '/pictures/' + image.name
         jsonObject = json.dumps({'pic':path},ensure_ascii = False)
         #加上ensure_ascii = False，就可以保持utf8的编码，不会被转成unicode
         return HttpResponse(jsonObject,content_type="application/json")
