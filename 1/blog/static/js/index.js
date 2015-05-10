@@ -276,7 +276,7 @@ window.onload=function(){
 	});
 	$("#content").delegate(".pic_box img","click",function(){
 		$("#popup,#origin_pic").show();
-		var s=$(this).attr("src").replace(/Thumnail/,"Picture").replace(/thumnail/,"");
+		var s=$(this).attr("src").replace(/compressed/,"").replace(/thumnail/,"");
 		if($("#origin_pic img").attr("src")==s){
 			var pich=parseInt($("#origin_pic img").css("height"));
 			var picw=parseInt($("#origin_pic img").css("width"));
