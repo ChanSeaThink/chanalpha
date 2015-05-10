@@ -401,8 +401,8 @@ def saveChange(request, ID):
     #picNameLs获取文中所有图片的文件名
     picNameLs = []
     for pss in picSrcLs:
-        if 'pictures'in pss:
-            picNameLs.append(pss[49:])
+        if pss[0:13]=='/showPicture/':
+            picNameLs.append(pss[13:])
         else:
             continue
     #picSavedObjLs存储所有已保存的图片数据。
